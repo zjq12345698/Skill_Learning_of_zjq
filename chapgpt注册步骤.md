@@ -1,4 +1,4 @@
-# ChptGPT注册流程
+# ChaptGPT注册流程
 ![image](https://picx.zhimg.com/80/v2-9d22427751dfbb25c0373d7ee86140c9_720w.png)
 ## 准备工作
 **1. 梯子 Clash for Windows**
@@ -25,8 +25,6 @@
 ![image](https://pic1.zhimg.com/80/v2-45640affd5cfc0205d7af3f1227d4b87_720w.png)
 
 **选择支付宝（现在最低冲2刀，人民币大概是15块钱，相当于156卢布，不同国家的验证码价格在15~150卢布）**
-
-![image](https://pic1.zhimg.com/80/v2-45640affd5cfc0205d7af3f1227d4b87_720w.png)
 
 ![image](https://pic1.zhimg.com/80/v2-5f0550bbdbed1a0476cee43535eb1e99_720w.png)
 
