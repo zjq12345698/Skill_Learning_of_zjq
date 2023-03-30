@@ -63,9 +63,22 @@
 
 ![image](https://picx.zhimg.com/80/v2-3af9c6fd10ce9bc8db8cce797f96fed4_720w.png)
 
+**验证邮箱后会让你输入一些基本信息
+
+![image](https://picx.zhimg.com/80/v2-c6ba151668191a55fbbd8f6fb2a57013_720w.png)
+
 **七、 到了填手机验证码界面先停到这**
 
+![image](https://picx.zhimg.com/80/v2-962b60e3c17bb257251496b19e4a95b9_720w.png)
+
 去[https://sms-activate.org/cn/](https://sms-activate.org/cn/)购买泰国的验证码
-**买过验证码将手机号复制到chapgpt注册页面国家选择到泰国，回到sms-activate等待验证码（1分钟左右）**
+
+**买过验证码将手机号复制到chapgpt注册页面（国家选择到泰国），回到sms-activate等待验证码（1分钟左右）**
+
+![image](https://pica.zhimg.com/80/v2-ba857d65878e38f1b470a67e7bae76de_720w.png)
+
 ***验证码一定要仔细输入，不能出错***
 
+
+
+**八、 注册成功，进入chapgpt主界面**
