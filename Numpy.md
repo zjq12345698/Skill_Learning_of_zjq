@@ -108,7 +108,29 @@ set(temp.flatten())
 
 ## ndarray计算
 
+### 1. 运算符
 ```Python
-# 
+# 逻辑判断, 如果涨跌幅大于0.5就标记为True 否则为False
+stock_change > 0.5
+stock_change[stock_change > 0.5] = 1.1
+
+# 判断stock_change[0:2, 0:5]是否全是上涨的
+np.all(stock_change[0:2, 0:5] > 0)
+# 判断前5只股票这段期间是否有上涨的
+np.any(stock_change[:5, :] > 0)
+
+# np.where(布尔值，True的位置的值，False的位置的值)
+np.where(temp > 0, 1, 0)
+# 大于0.5且小于1
+np.where(np.logical_and(temp > 0.5, temp < 1), 1, 0)
+# 大于0.5或小于-0.5
+np.where(np.logical_or(temp > 0.5, temp < -0.5), 11, 3)
+
+```
+
+### 2. 统计运算(min,max,mean(均值),median(中位数),var(方差),std(标准差))
+
+```Python
+
 
 ```
