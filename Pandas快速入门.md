@@ -78,6 +78,75 @@ df.set_index("month", drop=True)
 new_df = df.set_index(["year", "month"])
 ```
 
+## MultiIndex 与 Panel
+**MultiIndex**
+多级或分层索引对象
+index属性：
+- names: levels 的名称
+- levels: 每个 level 的元组值
+```Python
+new_df.index
+new_df.index.names
+new_df.index.levels
+```
+
+**Pannel   pandas.Panel(data=None,items=None,major_axis=None,minor_axis=None,copy=False,dtype=None)**
+存储 3 维数组的 Panel 结构:
+- items - axis 0，每个项目对应于内部包含的数据帧(DataFrame)。
+- major_axis - axis 1，它是每个数据帧(DataFrame)的索引(行)。
+- minor_axis - axis 2，它是每个数据帧(DataFrame)的列。
+```Python
+p = pd.Panel(np.arange(24).reshape(4,3,2),
+                 items=list('ABCD'),
+                 major_axis=pd.date_range('20130101', periods=3),
+                 minor_axis=['first', 'second'])
+p["A"]
+p.major_xs("2013-01-01")
+p.minor_xs("first")
+# 注：Pandas 从版本 0.20.0 开始弃用，推荐的用于表示 3D 数据的方法是 DataFrame 上的 MultiIndex 方法
+```
+**Series： 带索引的一维数组**
+
+### 属性
+
+- index
+- values
+
+```Python
+# 创建
+pd.Series(np.arange(3, 9, 2), index=["a", "b", "c"])
+# 或
+pd.Series({'red':100, 'blue':200, 'green': 500, 'yellow':1000})
+
+sr = data.iloc[1, :]
+sr.index # 索引
+sr.values # 值
+```
+
+## 基本数据操作
+
+
+```Python
+# 索引操作
+data = pd.read_csv("./stock_day/stock_day.csv")
+data = data.drop(["ma5","ma10","ma20","v_ma5","v_ma10","v_ma20"], axis=1) # 去掉一些不要的列
+data["open"]["2018-02-26"] # 直接索引，先列后行
+
+data.loc["2018-02-26"]["open"] # 按名字索引
+data.loc["2018-02-26", "open"]
+data.iloc[1, 0] # 数字索引
+
+# 组合索引
+# 获取行第1天到第4天，['open', 'close', 'high', 'low']这个四个指标的结果
+data.iloc[:4, ['open', 'close', 'high', 'low']] # 不能用了
+data.loc[data.index[0:4], ['open', 'close', 'high', 'low']]
+data.iloc[0:4, data.columns.get_indexer(['open', 'close', 'high', 'low'])]
+
+# 赋值操作
+data.open = 100
+data.iloc[1, 0] = 222
+```
+
 
 
       
