@@ -131,6 +131,51 @@ np.where(np.logical_or(temp > 0.5, temp < -0.5), 11, 3)
 ### 2. 统计运算(min,max,mean(均值),median(中位数),var(方差),std(标准差))
 
 ```Python
+temp.max(axis=0)
+np.max(temp, axis=1)
 
+# 返回最大值、最小值的位置
+np.argmax(tem,axis=)
+np.argmin(tem,axis=)
 
 ```
+
+### 3. 数组间运算
+
+```Python
+# 数组与数字间的运算
+arr = np.array([[1, 2, 3, 2, 1, 4], [5, 6, 1, 2, 3, 1]])
+arr / 10
+
+# 数组与数组之间的运算（维度相等，shape（其中相对应的一个地方为 1）两个条件都得满足
+np.dot(data,data1)
+np.matmul(data,data1)
+data @ data1
+
+# 矩阵（matrix）必须是二维的
+matrix1*matrix2
+
+```
+
+### 合并和分割
+
+```Python
+numpy.hstack           #水平拼接
+numpy.vstack           #竖拼接
+numpy.concatenate((a1,a2),axis=0)      #水平|竖拼接
+
+numpy.split(x,3)           # 分三份
+numpy.split(x,[3,4,6,10])   # 按索引分割
+```
+
+###  IO操作与数据处理
+
+```Python
+np.genfromtxt("test.csv", delimiter=",") # 会有问题，读不出字符串
+```
+
+### 处理缺失值
+
+  - 直接删除含有缺失值的样本
+  - 替换/插补 （补入平均值或中位数）
+
