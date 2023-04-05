@@ -257,10 +257,22 @@ day_close.to_hdf("test.h5", key="close")
 **read_json()
 pandas.read_json(path_or_buf=None,orient=None,typ="frame",lines=False)**
 - 将 JSON 格式转换成默认的 Pandas DataFrame 格式
-- orient: string,Indication of expected JSON string format.
+- orient: string,Indication of expected JSON string format.字符串，表示预期的JSON字符串格式。
+  - 'split': 将索引总结到索引，列名到列名，数据到数据
+  - 'records': s以columns:values的形式输出
+  - **'index': dindex默认以column:{index:value}的形式输出    
+  - 'values': 直接输出值
+- lines: 按照每行读取json对象
+- typ: 指定转换成的对象类型series或者dataframe
 
+**读取
 
- 
+```Python
+read = pd.read_json("./data/Sarcasm_Headlines_Dataset.json", orient="records", lines=True)
+```
+**to json()
+- DataFrame.to_json(path_or_buf=None, orient=None, lines=False)
+  - 将Pandas对象存储为json格式
 
  
 
