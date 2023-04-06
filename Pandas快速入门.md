@@ -273,8 +273,71 @@ read = pd.read_json("./data/Sarcasm_Headlines_Dataset.json", orient="records", l
 **to json()
 - DataFrame.to_json(path_or_buf=None, orient=None, lines=False)
   - 将Pandas对象存储为json格式
+## 缺失值处理
+- replace 实现数据替换
+- dropna 实现缺失值的删除
+- fillna 实现缺失值的填充
+- isnull 判断是否有缺失数据 NaN
+### 如何处理 NaN?
+- 判断是否有 NaN
+  - pd.isnull(df)
+  - pd.notnull(df)
+- 删除含有缺失值的样本
+  - df.dropna(inplace=True) 默认按行删除 inplace:True 修改原数据，False 返回新数据，默认 False
+- 替换/插补数据
+  - df.fillna(value,inplace=True) value 替换的值 inplace:True 修改原数据，False 返回新数据，默认 False
 
- 
+```Python
+import pandas as pd
+import numpy as np
+movie = pd.read_csv("./IMDB/IMDB-Movie-Data.csv")
+# 1）判断是否存在NaN类型的缺失值
+np.any(pd.isnull(movie)) # 返回True，说明数据中存在缺失值
+np.all(pd.notnull(movie)) # 返回False，说明数据中存在缺失值
+pd.isnull(movie).any()
+pd.notnull(movie).all()
+
+# 2）缺失值处理
+# 方法1：删除含有缺失值的样本
+data1 = movie.dropna()
+pd.notnull(data1).all()
+
+# 方法2：替换
+# 含有缺失值的字段
+# Revenue (Millions)
+# Metascore
+movie["Revenue (Millions)"].fillna(movie["Revenue (Millions)"].mean(), inplace=True)
+movie["Metascore"].fillna(movie["Metascore"].mean(), inplace=True)
+```
+
+## 数据离散化
+
+定义: 连续属性的离散化就是将连续属性的值域上，将值域划分为若干个离散的区间，最后用不同的符号或整数 值代表落在每个子区间的属性值。
+
+**如何实现数据的离散化**
+1. 分组
+  - 自动分组 sr = pd.qcut(data, bins)
+  - 自定义分组 sr = pd.cut(data, [])
+2. 将分组好的结果转换成 one-hot 编码（哑变量）
+  - pd.get_dummies(sr, prefix=)
+
+```Python
+# 1）准备数据
+data = pd.Series([165,174,160,180,159,163,192,184], index=['No1:165', 'No2:174','No3:160', 'No4:180', 'No5:159', 'No6:163', 'No7:192', 'No8:184'])
+# 2）分组
+# 自动分组
+sr = pd.qcut(data, 3)
+sr.value_counts()  # 看每一组有几个数据
+# 3）转换成one-hot编码
+pd.get_dummies(sr, prefix="height")
+
+# 自定义分组
+bins = [150, 165, 180, 195]
+sr = pd.cut(data, bins)
+# get_dummies
+pd.get_dummies(sr, prefix="身高")
+```
+
 
 
 
