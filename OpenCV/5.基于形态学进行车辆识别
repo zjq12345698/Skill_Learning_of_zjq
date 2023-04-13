@@ -1,0 +1,88 @@
+**cv2.bgsegm.createBackgroundSubtractorMOG([history, nminxtures, backgroundRatio, noiseSigma])**
+
+creatBackgroundSubtractorMOG()是以混合高斯模型为基础的前后景分割算法，是一个类，放在opencv下面的一个子包bgsegm里，我们可以通过这个类创建一个mog对象
+history：表示建模时需要多长时间的参考帧，默认是200毫秒。假设视频的播放速度是一秒钟显示25张图片，也就是25帧，那么建模参考的图片就是5张。
+nminxtures：高斯值范围，默认是5，就是把一张图片分成5x5个小块，每个小块都有一个高斯值，然后算出一个参考模型
+backgroundRatio：背景比例，就是背景在整张图片中的占比，默认是0.7，就是默认一张图中70%是背景。
+noiseSigma：噪音的参数，这个参数设置为0就是自动降噪，默认值也是0
+一般情况下，我们使用这个类时，一般都用默认参数即可
+
+```Python
+video = cv2.VideoCapture('video.mp4')
+
+mog = cv2.bgsegm.createBackgroundSubtractorMOG()
+kernel = cv2.getStructuringElement(cv2.MORPH_RECT, (5, 5))
+
+w_min = 90
+h_min = 82
+
+line_high = 600
+offset = 9  # 偏移量
+
+cars = []
+count = 0
+
+# 计算外接矩形中心点
+def center(x, y, w, h):
+    x1 = int(w/2)
+    y1 = int(h/2)
+    cx = int(x) + x1
+    cy = int(y) + y1
+    return cx, cy
+# 循环读取视频
+while True:
+    ret, frame = video.read()
+    if ret == True:
+        # 转换为灰度图
+        gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
+        # 高斯去噪
+        gaus_blur = cv2.GaussianBlur(gray, (3, 3), 5)
+        # 中值去噪
+        medi_blur = cv2.medianBlur(gray, 5)
+        mask = mog.apply(gaus_blur)
+        # 腐蚀
+        erode = cv2.erode(mask, kernel)
+        # 膨胀
+        dilate = cv2.dilate(erode, kernel, iterations=2)
+        # 闭运算（消除内部像素小块）
+        close = cv2.morphologyEx(dilate, cv2.MORPH_CLOSE, kernel)
+
+        # 查找轮廓
+        contours, h = cv2.findContours(close, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
+        
+        # 画出检测线
+        cv2.line(frame, (10, line_high), (1200, line_high), (255, 255, 0), 3)
+        # 画出所有轮廓
+        for contour in contours:
+            # 画外接矩形
+            (x, y, w, h) = cv2.boundingRect(contour)
+            # 根据w, h 过滤掉不需要的矩形
+            is_valid = (w >= w_min) &  (h >= h_min)
+            if not is_valid:
+                continue
+            # 到这的矩形， 就会被画出， 要求坐标点为整数
+            cv2.rectangle(frame, (x, y), (x+w, y+h), (0, 0, 255), 2)
+            # 把车抽象为一个点，即外接矩形的中心点
+            cpoint = center(x, y, w, h)
+            cars.append(cpoint)
+            cv2.circle(frame, (cpoint), 5, (0, 0, 255), -1)
+            
+            # 判断汽车是否过线
+            for (x, y) in cars:
+                if y > (line_high-offset) and y < (line_high+offset):
+                    # 落入统计线区间，开始计数
+                    count += 1
+                    cars.remove((x, y))
+        # 显示视频
+        cv2.putText(frame, 'Vehicle Count:' + str(count), (500, 60), cv2.FONT_HERSHEY_PLAIN, 4, (0, 0, 255), 5 )
+        cv2.imshow('frame', frame)
+        
+    key = cv2.waitKey(1)
+    # 用户按esc退出
+    if key ==27:
+        break
+        
+# 释放资源
+video.release()
+cv2.destroyAllWindows()
+```
