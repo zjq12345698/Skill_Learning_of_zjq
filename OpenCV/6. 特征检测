@@ -1,1 +1,26 @@
-## harris角检测
+## harris角点检测
+1. 沿着水平方向、竖直方向，一个变化比较平稳，一个变化比较迅速，那它就是一个边界。
+2. 无论是沿着水平方向，还是沿着水平方向，变化都比较明显，则它是角点。
+
+cv2.cornerHarris(src, blockSize, ksize, k)
+- src: 数据类型为 float32 的输入图像
+- blockSize: 角点检测检测领域的窗口大小
+- ksize: Sobel 求导中使用的窗口大小
+- k: 角点检测方程中的自由参数,取值参数为 [0,04,0.06], 一般取0.04
+
+```Python
+img = cv2.imread('mg3.jpg')
+# 转化为灰度图
+gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+
+# 角点检测, 返回角点响应, 每一个像素都可以计算出一个角点响应.
+dst = cv2.cornerHarris(gray, blockSize=2, ksize=3, k=0.04)
+
+# 显示角点, 设定阈值, dst.max()
+img[dst > (0.01 * dst.max())] = [0, 0, 255]
+cv2.imshow('img', img)
+cv2.waitKey(0)
+cv2.destroyAllWindows()
+```
+
+## 
